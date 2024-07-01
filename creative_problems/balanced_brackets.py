@@ -1,6 +1,6 @@
 # Created by Sai at 6/9/2024
 
-from elementary_data_structures.stack_adt_linked_list_impl import Stack
+from intermediate_data_structures.stack_adt_linked_list_impl import Stack
 
 
 def check_balanced_brackets(input_expression):

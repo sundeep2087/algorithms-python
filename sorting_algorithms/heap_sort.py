@@ -1,5 +1,5 @@
 # Created by Sai at 6/26/2024
-from elementary_data_structures.min_heap_arr_impl import MinHeap
+from intermediate_data_structures.min_heap_arr_impl import MinHeap
 
 
 def max_heapify(arr, n, i):

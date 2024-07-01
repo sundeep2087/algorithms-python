@@ -2,7 +2,7 @@
 import numpy as np
 
 
-from elementary_data_structures.oneway_linked_list_implementation import LinkedList
+from intermediate_data_structures.oneway_linked_list_implementation import LinkedList
 
 
 def remove_duplicates(unsorted_list):
