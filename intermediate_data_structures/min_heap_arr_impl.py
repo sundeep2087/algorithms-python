@@ -50,6 +50,21 @@ class MinHeap:
         self._heap_size -= 1
         return min_key
 
+    def delete(self, data):
+        if self.is_empty():
+            return None
+
+        data_index = 0
+        for i in range(self._heap_size):
+            if self._heap[i] ==  data:
+                data_index = i
+                break
+
+        self._heap[data_index] = self._heap[-1]
+        self._heap.pop()
+        self.__sift_down(data_index)
+        self._heap_size -= 1
+
     def __str__(self):
         return_string = ""
         for key in self._heap:
@@ -78,9 +93,10 @@ def run_test_client():
     min_heap.extract_min()
     min_heap.extract_min()
     min_heap.extract_min()
-    min_heap.extract_min()
-    min_heap.extract_min()
-    min_heap.extract_min()
+    print(min_heap)
+    min_heap.delete(271)
+    min_heap.delete(393)
+    min_heap.delete(387);min_heap.delete(473);min_heap.delete(393)
     print(f"Heap Size: {min_heap.heap_size()}")
     print(min_heap)
 
