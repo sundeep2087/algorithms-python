@@ -102,17 +102,56 @@ def draw_diamond_black_noshow(diag1, diag2, x_center=0, y_center=0):
                           y=[t2y1, t2y2, t2y3])
 
 
+# ++++++++++++++++++++++++++++++++++++++++++++++++++ #
+# ++++++++++++++++++ Spade Drawing +++++++++++++++++ #
+# ++++++++++++++++++++++++++++++++++++++++++++++++++ #
+
 def draw_spade(diag1, diag2, x_center=0, y_center=0, msec=float("inf")):
     draw_diamond_black_noshow(diag1, diag2, 0, 0)
-    (c1x, c1y) = (((x_center + diag1 / 2) + x_center) / 2, ((y_center + diag2 / 2) + y_center) / 2)
-    (c2x, c2y) = (((x_center - diag1 / 2) + x_center) / 2, ((y_center + diag2 / 2) + y_center) / 2)
+    diamond_tip_x, diamond_tip_y = x_center, y_center - diag2 / 2
+    diamond_tip_x, diamond_tip_y = diamond_tip_x-0.01, diamond_tip_y+0.01
+    stand_height = diag2 // 3
+    stddraw.filledPolygon(x=[diamond_tip_x, diamond_tip_x, diamond_tip_x+stand_height],
+                          y=[diamond_tip_y, diamond_tip_y-stand_height, diamond_tip_y-stand_height])
+    stddraw.filledPolygon(x=[diamond_tip_x, diamond_tip_x, diamond_tip_x-stand_height],
+                          y=[diamond_tip_y, diamond_tip_y-stand_height, diamond_tip_y-stand_height])
+    (c1x, c1y) = (((x_center + diag1 / 2) + x_center) / 2, ((y_center - diag2 / 2) + y_center) / 2)
+    (c2x, c2y) = (((x_center - diag1 / 2) + x_center) / 2, ((y_center - diag2 / 2) + y_center) / 2)
     radius = np.sqrt(np.power(((x_center + diag1 / 2) - c1x), 2) + np.power(c1y - y_center, 2))
     stddraw.filledCircle(c1x, c1y, radius)
     stddraw.filledCircle(c2x, c2y, radius)
-
-
     stddraw.show(msec)
 
+
+def get_x(angle, side_length):
+    return math.cos(angle) * side_length
+
+
+def get_y(angle, side_length):
+    return math.sin(angle) * side_length
+
+
+def draw_club(x_center, y_center, size, msec=float("inf")):
+    scale_canvas(size)
+    stddraw.setPenColor(stddraw.BLACK)
+    stddraw.point(x_center, y_center)
+    x1, y1 = 0, size / 2
+    angle_rad = 2 * math.pi / 3
+
+    x2 = x1 * math.cos(angle_rad) - y1 * math.sin(angle_rad)
+    y2 = x1 * math.sin(angle_rad) + y1 * math.cos(angle_rad)
+
+    x3 = x1 * math.cos(-angle_rad) - y1 * math.sin(-angle_rad)
+    y3 = x1 * math.sin(-angle_rad) + y1 * math.cos(-angle_rad)
+
+    stddraw.filledPolygon(x=[x1, x2, x3],
+                    y=[y1, y2, y3])
+
+    stddraw.filledCircle(x1, y1, size / 2)
+    stddraw.filledCircle(x2, y2, size / 2)
+    stddraw.filledCircle(x3, y3, size / 2)
+
+    stddraw.show(msec)
 
 
 def run_test_client():
@@ -120,7 +159,8 @@ def run_test_client():
     # diamonds_blinker()
     # draw_hearts(10, 10, 0, 0)
     # heart_beat()
-    draw_spade(5, 5, 0, 0)
+    # draw_spade(10, 10, 0, 0)
+    draw_club(0, 0, 10)
 
 
 if __name__ == "__main__":
