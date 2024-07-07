@@ -16,7 +16,7 @@ def reverse_string(input_string):
 
 
 def run_test_client():
-    input_strings = ["Blue Headphones", "200mg Advil", "liril", "malayalam"]
+    input_strings = ["Algorithms For Ever", "Dragon Warrior", "liril", "malayalam"]
     for in_str in input_strings:
         reversed_string = reverse_string(in_str)
         print(reversed_string)
