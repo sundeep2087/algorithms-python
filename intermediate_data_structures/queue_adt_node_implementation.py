@@ -53,6 +53,11 @@ class LLQueue:
             return None
         return self.head.data
 
+    def get_rear(self):
+        if self.is_empty():
+            return None
+        return self.tail.data
+
     class QueueIterator:
         def __init__(self, curr_node):
             self.curr_node = curr_node
