@@ -1,6 +1,6 @@
 # Created by Sai at 6/11/2024
 
-from intermediate_data_structures.queue_adt_linked_list_impl import LLQueue
+from intermediate_data_structures.queue_adt_node_implementation import LLQueue
 from intermediate_data_structures.stack_adt_linked_list_impl import Stack
 import numpy as np
 import time
