@@ -36,10 +36,10 @@ Contact:
 from intermediate_data_structures.queue_adt_node_implementation import LLQueue
 
 
-# ====================================================== #
-# =============== Expensive Pop Operation ============== #
-# ====================================================== #
-#
+# ============================================================================ #
+# =============== Expensive Pop Operation, Cheap Push Operation ============== #
+# ============================================================================ #
+
 # class Stack:
 #     def __init__(self):
 #         self.queue1 = LLQueue()
@@ -49,11 +49,12 @@ from intermediate_data_structures.queue_adt_node_implementation import LLQueue
 #         self.queue1.enqueue(data)
 #
 #     def pop(self):
+#         if self.is_empty():
+#             return
 #         for _ in range(self.queue1.size() - 1):
 #             self.queue2.enqueue(self.queue1.dequeue())
-#         return_element =  self.queue1.dequeue()
-#         for _ in range(self.queue2.size()):
-#             self.queue1.enqueue(self.queue2.dequeue())
+#         return_element = self.queue1.dequeue()
+#         self.queue1, self.queue2 = self.queue2, self.queue1
 #         return return_element
 #
 #     def is_empty(self):
@@ -66,9 +67,9 @@ from intermediate_data_structures.queue_adt_node_implementation import LLQueue
 #         return self.queue1.get_rear()
 
 
-# ====================================================== #
-# ============== Expensive Push Operation ============== #
-# ====================================================== #
+# =========================================================================== #
+# ============== Expensive Push Operation, Cheap Pop Operation ============== #
+# =========================================================================== #
 
 class Stack:
     def __init__(self):
@@ -83,9 +84,8 @@ class Stack:
         for _ in range(self.queue1.size()):
             self.queue2.enqueue(self.queue1.dequeue())
 
-        # Transfer all elements from queue2 back to queue1
-        for _ in range(self.queue2.size()):
-            self.queue1.enqueue(self.queue2.dequeue())
+        # Swap Queue1, Queue2
+        self.queue1, self.queue2 = self.queue2, self.queue1
 
     def pop(self):
         return self.queue1.dequeue()
