@@ -1,7 +1,7 @@
 # Created by Sai at 6/27/2024
 
 import numpy as np
-# np.random.seed(1621)
+np.random.seed(1621)
 
 
 def bubble_sort(arr):
