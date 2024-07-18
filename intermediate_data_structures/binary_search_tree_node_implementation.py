@@ -38,11 +38,11 @@ Contact:
 
 
 class Node:
-    def __init__(self, key, left_node, right_node, parent_node):
+    def __init__(self, key, left, right, parent):
         self.key = key
-        self.left = left_node
-        self.right = right_node
-        self.parent = parent_node
+        self.left = left
+        self.right = right
+        self.parent = parent
 
 
 class BinarySearchTree:
@@ -91,10 +91,12 @@ class BinarySearchTree:
         print(curr_node.key, end=" ")
 
     def search(self, curr_node, search_key):
-        if not self.root:
+        if self.root is None:
             return
-        while curr_node and search_key != curr_node.key:
-            if search_key < curr_node.key:
+        while curr_node:
+            if search_key == curr_node.key:
+                return curr_node
+            elif search_key < curr_node.key:
                 curr_node = curr_node.left
             else:
                 curr_node = curr_node.right
@@ -115,16 +117,18 @@ class BinarySearchTree:
         return curr_node
 
     def successor(self, curr_node):
-        if not self.root:
-            return
+        if not curr_node:
+            return None
+
         if curr_node.right:
-            self.minimum_node(curr_node.right)
-        else:
-            parent_node = curr_node.parent
-            while parent_node and curr_node == parent_node.right:
-                curr_node = parent_node
-                parent_node = parent_node.parent
-            return parent_node
+            return self.minimum_node(curr_node.right)
+
+        parent_node = curr_node.parent
+        while parent_node and (parent_node.right == curr_node):
+            curr_node = parent_node
+            parent_node = parent_node.parent
+
+        return parent_node
 
 
 def run_test_client():
@@ -147,8 +151,10 @@ def run_test_client():
     print(f"Minimum Element: {max_element_node.key}")
     succ_8 = bst.successor(bst.search(bst.root, 8))
     print(f"Successor to 8: {succ_8.key}")
+    bst.inorder_traversal(bst.root)
+    print()
     succ_42 = bst.successor(bst.search(bst.root, 42))
-    print(f"Successor to 42: {succ_42.key}")
+    print(f"\nSuccessor to 42: {succ_42.key}")
 
 
 if __name__ == "__main__":
