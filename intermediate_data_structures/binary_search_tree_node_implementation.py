@@ -130,6 +130,20 @@ class BinarySearchTree:
 
         return parent_node
 
+    def predecessor(self, curr_node):
+        if not curr_node:
+            return
+
+        if curr_node.left:
+            return self.maximum_node(curr_node.left)
+
+        parent_node = curr_node.parent
+        while parent_node and (curr_node == parent_node.left):
+            curr_node = parent_node
+            parent_node = parent_node.parent
+
+        return parent_node
+
 
 def run_test_client():
     bst = BinarySearchTree()
@@ -155,6 +169,22 @@ def run_test_client():
     print()
     succ_42 = bst.successor(bst.search(bst.root, 42))
     print(f"\nSuccessor to 42: {succ_42.key}")
+    pred_8 = bst.predecessor(bst.search(bst.root, 8))
+    print(f"Successor to 8: {pred_8.key}")
+    bst.inorder_traversal(bst.root)
+    print()
+    pred_42 = bst.predecessor(bst.search(bst.root, 42))
+    print(f"\nSuccessor to 42: {pred_42.key}")
+    pred_1 = bst.predecessor(bst.search(bst.root, 1))
+    try:
+        print(f"\nPredecessor of 1: {pred_1.key}")
+    except AttributeError:
+        print(f"No Predecessor 1!")
+    succ_99 = bst.successor(bst.search(bst.root, 99))
+    try:
+        print(f"Successor to 99: {succ_99.key}")
+    except AttributeError:
+        print(f"No Successor to 99!")
 
 
 if __name__ == "__main__":
