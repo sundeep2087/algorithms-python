@@ -144,6 +144,38 @@ class BinarySearchTree:
 
         return parent_node
 
+    def _transplant(self, node_u, node_v):
+        if not self.root:
+            return
+
+        if not node_u.parent:
+            self.root = node_v
+        elif node_u == node_u.parent.left:
+            node_u.parent.left = node_v
+        else:
+            node_u.parent.right = node_v
+
+        if node_v:
+            node_v.parent = node_u.parent
+
+    def delete(self, curr_node):
+        if not self.root:
+            return
+
+        if not curr_node.left:
+            self._transplant(curr_node, curr_node.right)
+        elif not curr_node.right:
+            self._transplant(curr_node, curr_node.left)
+        else:
+            node_y = self.minimum_node(curr_node.right)
+            if node_y != curr_node.right:
+                self._transplant(node_y, node_y.right)
+                node_y.right = curr_node.right
+                node_y.right.parent = node_y
+            self._transplant(curr_node, node_y)
+            node_y.left = curr_node.left
+            node_y.left.parent = node_y
+
 
 def run_test_client():
     bst = BinarySearchTree()
@@ -185,6 +217,11 @@ def run_test_client():
         print(f"Successor to 99: {succ_99.key}")
     except AttributeError:
         print(f"No Successor to 99!")
+    bst.delete(bst.search(bst.root, 99))
+    bst.delete(bst.search(bst.root, 11))
+    bst.delete(bst.search(bst.root, 1))
+    bst.inorder_traversal(bst.root)
+
 
 
 if __name__ == "__main__":
