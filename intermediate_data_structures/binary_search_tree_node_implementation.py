@@ -233,6 +233,8 @@ def run_test_client():
     print(f"\nIs 1 Present? Location : {bst.search(bst.root, 1)}")
     bst.insert(99)
     bst.insert(8)
+    print(f"\nDepth of 99: {bst.depth(bst.search(bst.root, 99))}")
+    print(f"\nDepth of 8: {bst.depth(bst.search(bst.root, 8))}")
     print(f"\nTree Height(11): {bst.height(bst.search(bst.root, 11))}")
     min_element_node = bst.minimum_node(bst.root)
     max_element_node = bst.maximum_node(bst.root)
@@ -263,6 +265,9 @@ def run_test_client():
         print(f"Successor to 99: {succ_99.key}")
     except AttributeError:
         print(f"No Successor to 99!")
+
+    print(f"\nDepth of 1: {bst.depth(bst.search(bst.root, 1))}")
+    print(f"\nDepth of 3: {bst.depth(bst.search(bst.root, 3))}")
     bst.delete(bst.search(bst.root, 99))
     bst.delete(bst.search(bst.root, 11))
     bst.delete(bst.search(bst.root, 1))
@@ -270,6 +275,7 @@ def run_test_client():
     bst.inorder_traversal(bst.root)
     print(f"\nTree Height: {bst.height()}")
     print(f"\nTree Height(24): {bst.height(bst.search(bst.root, 24))}")
+    print(f"\nDepth of 11: {bst.depth(bst.search(bst.root, 11))}")
 
 
 if __name__ == "__main__":
