@@ -50,6 +50,9 @@ class BinarySearchTree:
         self.root = None
         self.size = 0
 
+    def is_empty(self):
+        return self.root is None
+
     def insert(self, insert_key):
         new_node = Node(insert_key, None, None, None)
         curr_node = self.root
@@ -67,6 +70,7 @@ class BinarySearchTree:
             parent_node.left = new_node
         else:
             parent_node.right = new_node
+        self.size += 1
 
     # Traversal Methods
     def inorder_traversal(self, curr_node):
@@ -175,6 +179,20 @@ class BinarySearchTree:
             self._transplant(curr_node, node_y)
             node_y.left = curr_node.left
             node_y.left.parent = node_y
+        self.size -= 1
+
+    def _height_recursive(self, node):
+        if not node:
+            return -1
+        left_height = self._height_recursive(node.left)
+        right_height = self._height_recursive(node.right)
+        return max(left_height, right_height) + 1
+
+    def height(self, node=None):
+        if not node:
+            return self._height_recursive(self.root)
+        else:
+            return self._height_recursive(node)
 
 
 def run_test_client():
@@ -186,6 +204,8 @@ def run_test_client():
     bst.insert(24)
     bst.insert(6)
     bst.insert(42)
+    print(f"Size of BST: {bst.size}")
+    print(f"Tree Height: {bst.height()}")
     bst.inorder_traversal(bst.root)
     print(f"\nIs 99 Present? Location : {bst.search(bst.root, 99)}")
     print(f"\nIs 1 Present? Location : {bst.search(bst.root, 1)}")
@@ -199,12 +219,15 @@ def run_test_client():
     print(f"Successor to 8: {succ_8.key}")
     bst.inorder_traversal(bst.root)
     print()
+    print(f"Tree Height: {bst.height()}")
     succ_42 = bst.successor(bst.search(bst.root, 42))
     print(f"\nSuccessor to 42: {succ_42.key}")
     pred_8 = bst.predecessor(bst.search(bst.root, 8))
     print(f"Successor to 8: {pred_8.key}")
     bst.inorder_traversal(bst.root)
     print()
+    print(f"Size of BST: {bst.size}")
+    print(f"Tree Height: {bst.height()}")
     pred_42 = bst.predecessor(bst.search(bst.root, 42))
     print(f"\nSuccessor to 42: {pred_42.key}")
     pred_1 = bst.predecessor(bst.search(bst.root, 1))
@@ -220,8 +243,10 @@ def run_test_client():
     bst.delete(bst.search(bst.root, 99))
     bst.delete(bst.search(bst.root, 11))
     bst.delete(bst.search(bst.root, 1))
+    print(f"Size of BST: {bst.size}")
     bst.inorder_traversal(bst.root)
-
+    print(f"\nTree Height: {bst.height()}")
+    print(f"\nTree Height: {bst.height(bst.search(bst.root, 24))}")
 
 
 if __name__ == "__main__":
