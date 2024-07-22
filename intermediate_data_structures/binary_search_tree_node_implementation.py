@@ -194,6 +194,28 @@ class BinarySearchTree:
         else:
             return self._height_recursive(node)
 
+    def _recursive_depth(self, curr_node, search_node, depth=0):
+        if not curr_node:
+            return -1
+
+        if curr_node == search_node:
+            return depth
+
+        left_depth = self._recursive_depth(curr_node.left, search_node, depth+1)
+        if left_depth != -1:
+            return left_depth
+
+        right_depth = self._recursive_depth(curr_node.right, search_node, depth+1)
+        if right_depth != -1:
+            return right_depth
+
+        return -1
+
+    def depth(self, node):
+        if not node:
+            return -1
+        return self._recursive_depth(self.root, node)
+
 
 def run_test_client():
     bst = BinarySearchTree()
@@ -211,6 +233,7 @@ def run_test_client():
     print(f"\nIs 1 Present? Location : {bst.search(bst.root, 1)}")
     bst.insert(99)
     bst.insert(8)
+    print(f"\nTree Height(11): {bst.height(bst.search(bst.root, 11))}")
     min_element_node = bst.minimum_node(bst.root)
     max_element_node = bst.maximum_node(bst.root)
     print(f"Minimum Element: {min_element_node.key}")
@@ -246,7 +269,7 @@ def run_test_client():
     print(f"Size of BST: {bst.size}")
     bst.inorder_traversal(bst.root)
     print(f"\nTree Height: {bst.height()}")
-    print(f"\nTree Height: {bst.height(bst.search(bst.root, 24))}")
+    print(f"\nTree Height(24): {bst.height(bst.search(bst.root, 24))}")
 
 
 if __name__ == "__main__":
