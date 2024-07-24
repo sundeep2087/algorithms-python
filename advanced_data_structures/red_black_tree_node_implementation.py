@@ -89,6 +89,43 @@ class RedBlackTree:
         node_y.right = node_x
         node_x.parent = node_y
 
+    def insert_fixup(self, node_z):
+        while node_z.parent.color == "red":
+            if node_z.parent is node_z.parent.parent.left:
+
+                node_y = node_z.parent.parent.right
+
+                if node_y.color == "red":
+                    node_z.parent.color = "black"
+                    node_y.color = "black"
+                    node_z.parent.parent.color = "red"
+                    node_z = node_z.parent.parent
+                else:
+                    if node_z is node_z.parent.right:
+                        node_z = node_z.parent
+                        self.left_rotate(node_z)
+                    node_z.parent.color = "black"
+                    node_z.parent.parent.color = "red"
+                    self.right_rotate(node_z.parent.parent)
+            else:
+                node_y = node_z.parent.parent.left
+
+                if node_y.color == "red":
+                    node_z.parent.parent.color = "red"
+                    node_z.parent.color = "black"
+                    node_y.color = "black"
+                    node_z = node_z.parent.parent
+                else:
+                    if node_z is node_z.parent.left:
+                        node_z = node_z.parent
+                        self.right_rotate(node_z)
+                    node_z.parent.color = "black"
+                    node_z.parent.parent.color = "red"
+                    self.left_rotate(node_z.parent.parent)
+
+        self.root.color = "black"
+
+
     def insert(self, key):
         node_z = Node(key=key, left=None, right=None, parent=None, color=None)
         node_z.left = self.nil
@@ -112,5 +149,5 @@ class RedBlackTree:
         else:
             node_y.right = node_z
 
-        self.insert_fixup(self.root, node_z)
+        self.insert_fixup(node_z)
 
