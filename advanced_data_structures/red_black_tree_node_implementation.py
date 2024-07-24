@@ -125,29 +125,53 @@ class RedBlackTree:
 
         self.root.color = "black"
 
+    def insert(self, insert_key):
+        new_node = Node(key=insert_key, left=None, right=None, parent=None, color=None)
+        new_node.left = self.nil
+        new_node.right = self.nil
+        new_node.color = "red"
 
-    def insert(self, key):
-        node_z = Node(key=key, left=None, right=None, parent=None, color=None)
-        node_z.left = self.nil
-        node_z.right = self.nil
-        node_z.color = "red"
-
-        node_x = self.root
-        node_y = self.nil
-        while node_x is not self.nil:
-            node_y = node_x
-            if node_z.key < node_x.key:
-                node_x = node_x.left
+        curr_node = self.root
+        parent = self.nil
+        while curr_node:
+            parent = curr_node
+            if new_node.key < curr_node.key:
+                curr_node = curr_node.left
             else:
-                node_x = node_x.right
+                curr_node = curr_node.right
 
-        node_z.parent = node_y
-        if node_y is self.nil:
-            self.root = node_z
-        elif node_z.key < node_y.key:
-            node_y.left = node_z
+        new_node.parent = parent
+        if parent is self.nil:
+            self.root = new_node
+        elif new_node.key < parent.key:
+            parent.left = new_node
         else:
-            node_y.right = node_z
+            parent.right = new_node
 
-        self.insert_fixup(node_z)
+        self.insert_fixup(new_node)
 
+    def inorder_traversal(self, curr_node):
+        if not curr_node:
+            return
+        self.inorder_traversal(curr_node.left)
+        print(curr_node.key, end=" ")
+        self.inorder_traversal(curr_node.right)
+
+
+def run_test_client():
+    rb_tree = RedBlackTree()
+    rb_tree.insert(2)
+    rb_tree.insert(3)
+    rb_tree.insert(4)
+    rb_tree.insert(7)
+    rb_tree.insert(11)
+    rb_tree.insert(9)
+    rb_tree.insert(6)
+    rb_tree.insert(14)
+    rb_tree.insert(18)
+    rb_tree.insert(20)
+    rb_tree.inorder_traversal(rb_tree.root)
+
+
+if __name__ == "__main__":
+    run_test_client()
