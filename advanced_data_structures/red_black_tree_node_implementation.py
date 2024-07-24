@@ -38,18 +38,17 @@ Contact:
 
 
 class Node:
-    def __init__(self, key, left, right, parent, color):
+    def __init__(self, key, color="red"):
         self.key = key
-        self.left = left
-        self.right = right
-        self.parent = parent
+        self.left = None
+        self.right = None
+        self.parent = None
         self.color = color
 
 
 class RedBlackTree:
     def __init__(self):
         self.root = None
-        self.nil = Node(None,None, None, None, "black")
         self._size = 0
 
     def is_empty(self):
@@ -90,7 +89,7 @@ class RedBlackTree:
         node_x.parent = node_y
 
     def insert_fixup(self, node_z):
-        while node_z.parent.color == "red":
+        while node_z is not self.root and node_z.parent.color == "red":
             if node_z.parent is node_z.parent.parent.left:
 
                 node_y = node_z.parent.parent.right
@@ -110,7 +109,7 @@ class RedBlackTree:
             else:
                 node_y = node_z.parent.parent.left
 
-                if node_y.color == "red":
+                if node_y and node_y.color == "red":
                     node_z.parent.parent.color = "red"
                     node_z.parent.color = "black"
                     node_y.color = "black"
@@ -126,13 +125,10 @@ class RedBlackTree:
         self.root.color = "black"
 
     def insert(self, insert_key):
-        new_node = Node(key=insert_key, left=None, right=None, parent=None, color=None)
-        new_node.left = self.nil
-        new_node.right = self.nil
-        new_node.color = "red"
+        new_node = Node(insert_key)
 
         curr_node = self.root
-        parent = self.nil
+        parent = None
         while curr_node:
             parent = curr_node
             if new_node.key < curr_node.key:
@@ -141,7 +137,7 @@ class RedBlackTree:
                 curr_node = curr_node.right
 
         new_node.parent = parent
-        if parent is self.nil:
+        if parent is None:
             self.root = new_node
         elif new_node.key < parent.key:
             parent.left = new_node
