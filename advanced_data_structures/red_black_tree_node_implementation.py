@@ -93,11 +93,24 @@ class RedBlackTree:
         node_z = Node(key=key, left=None, right=None, parent=None, color=None)
         node_z.left = self.nil
         node_z.right = self.nil
+        node_z.color = "red"
 
         node_x = self.root
         node_y = self.nil
         while node_x is not self.nil:
             node_y = node_x
+            if node_z.key < node_x.key:
+                node_x = node_x.left
+            else:
+                node_x = node_x.right
 
+        node_z.parent = node_y
+        if node_y is self.nil:
+            self.root = node_z
+        elif node_z.key < node_y.key:
+            node_y.left = node_z
+        else:
+            node_y.right = node_z
 
+        self.insert_fixup(self.root, node_z)
 
