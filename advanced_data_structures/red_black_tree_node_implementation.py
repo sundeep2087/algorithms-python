@@ -230,6 +230,36 @@ class RedBlackTree:
 
         node_v.parent = node_u.parent
 
+    def delete(self, delete_key):
+        node = self.search(delete_key)
+        if not node:
+            print(f"No node in tree with key {delete_key}")
+            return
+        original_color = node.color
+        if node.left is None:
+            child = node.right
+            self.transplant(node, node.right)
+        elif node.right is None:
+            child = node.left
+            self.transplant(node, node.left)
+        else:
+            successor = self.minimum_node(node.right)
+            original_color = successor.color
+            child = successor.right
+
+            if successor != node.right:
+                self.transplant(successor, successor.right)
+                successor.right = node.right
+                successor.right.parent = successor
+            else:
+                child.parent = successor
+            self.transplant(node, successor)
+            node.left = successor.left
+            successor.left.parent = successor
+            successor.color = node.color
+        if original_color == "black":
+            self.delete_fixup(child)
+
 
 def run_test_client():
     rb_tree = RedBlackTree()
