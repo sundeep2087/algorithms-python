@@ -36,6 +36,8 @@ Contact:
 
 """
 
+from intermediate_data_structures.queue_adt_node_implementation import LLQueue
+
 
 class Node:
     def __init__(self, key, left, right, parent):
@@ -93,6 +95,29 @@ class BinarySearchTree:
         self.postorder_traversal(curr_node.left)
         self.postorder_traversal(curr_node.right)
         print(curr_node.key, end=" ")
+
+    def levelorder_traversal(self, curr_node):
+        if not curr_node:
+            return []
+
+        queue = LLQueue()
+        queue.enqueue(self.root)
+
+        while queue:
+            curr_level_nodes = []
+            curr_level_size = len(queue)
+
+            for _ in range(curr_level_size):
+                next_node = queue.dequeue()
+                curr_level_nodes.append(next_node.key)
+
+                if next_node.left:
+                    queue.enqueue(next_node.left)
+
+                if next_node.right:
+                    queue.enqueue(next_node.right)
+
+            print(*curr_level_nodes)
 
     def search(self, curr_node, search_key):
         if self.root is None:
