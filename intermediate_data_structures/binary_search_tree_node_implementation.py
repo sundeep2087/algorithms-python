@@ -101,7 +101,7 @@ class BinarySearchTree:
             return []
 
         queue = LLQueue()
-        queue.enqueue(self.root)
+        queue.enqueue(curr_node)
 
         while queue:
             curr_level_nodes = []
@@ -304,6 +304,7 @@ def run_test_client():
     print(f"\nTree Height: {bst.height()}")
     print(f"\nTree Height(24): {bst.height(bst.search(bst.root, 24))}")
     print(f"\nDepth of 11: {bst.depth(bst.search(bst.root, 11))}")
+    bst.levelorder_traversal(bst.search(bst.root, 7))
 
 
 if __name__ == "__main__":

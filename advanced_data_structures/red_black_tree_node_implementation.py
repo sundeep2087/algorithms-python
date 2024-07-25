@@ -170,11 +170,11 @@ class RedBlackTree:
         print(curr_node.key, end=" ")
 
     def levelorder_traversal(self, curr_node):
-        if not curr_node:
+        if not curr_node or self.root:
             return []
 
         queue = LLQueue()
-        queue.enqueue(self.root)
+        queue.enqueue(curr_node)
 
         while queue:
             curr_level_nodes = []
