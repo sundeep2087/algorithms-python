@@ -206,6 +206,30 @@ class RedBlackTree:
                 curr_node = curr_node.right
         return curr_node
 
+    def minimum_node(self, curr_node):
+        if not self.root:
+            return
+        while curr_node:
+            curr_node = curr_node.left
+        return curr_node
+
+    def maximum_node(self, curr_node):
+        if not self.root:
+            return
+        while curr_node:
+            curr_node = curr_node.right
+        return curr_node
+
+    def transplant(self, node_u, node_v):
+        if node_u.parent is None:
+            self.root = node_v
+        elif node_u == node_u.parent.right:
+            node_u.parent.right = node_v
+        else:
+            node_u.parent.left = node_v
+
+        node_v.parent = node_u.parent
+
 
 def run_test_client():
     rb_tree = RedBlackTree()
