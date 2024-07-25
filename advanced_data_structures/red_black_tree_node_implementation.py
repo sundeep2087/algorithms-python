@@ -227,10 +227,10 @@ class RedBlackTree:
             node_u.parent.right = node_v
         else:
             node_u.parent.left = node_v
+        if node_v:
+            node_v.parent = node_u.parent
 
-        node_v.parent = node_u.parent
-
-    def delete_fixup(self, x_node):
+    def _delete_fixup(self, x_node):
         while x_node != self.root and x_node.color == "black":
             if x_node == x_node.parent.left:
                 w_node = x_node.parent.right
@@ -276,11 +276,6 @@ class RedBlackTree:
                     x_node = self.root
         x_node.color = "black"
 
-
-
-
-
-
     def delete(self, delete_key):
         node = self.search(delete_key)
         if not node:
@@ -309,7 +304,7 @@ class RedBlackTree:
             successor.left.parent = successor
             successor.color = node.color
         if original_color == "black":
-            self.delete_fixup(child)
+            self._delete_fixup(child)
 
 
 def run_test_client():
@@ -332,6 +327,10 @@ def run_test_client():
     print(f"Node with key 11 is found at - {rb_tree.search(11)}")
     print(f"Node with key 100 is found at - {rb_tree.search(100)}")
     rb_tree.levelorder_traversal(rb_tree.search(18))
+    rb_tree.delete(23)
+    rb_tree.delete(8)
+    rb_tree.inorder_traversal(rb_tree.root)
+
 
 if __name__ == "__main__":
     run_test_client()
