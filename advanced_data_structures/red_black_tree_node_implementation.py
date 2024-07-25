@@ -153,6 +153,20 @@ class RedBlackTree:
         print(curr_node.key, end=" ")
         self.inorder_traversal(curr_node.right)
 
+    def preorder_traversal(self, curr_node):
+        if not curr_node:
+            return
+        print(curr_node.key, end=" ")
+        self.preorder_traversal(curr_node.left)
+        self.preorder_traversal(curr_node.right)
+
+    def postorder_traversal(self, curr_node):
+        if not curr_node:
+            return
+        self.postorder_traversal(curr_node.left)
+        self.postorder_traversal(curr_node.right)
+        print(curr_node.key, end=" ")
+
 
 def run_test_client():
     rb_tree = RedBlackTree()
@@ -166,6 +180,8 @@ def run_test_client():
     rb_tree.insert(14)
     rb_tree.insert(18)
     rb_tree.insert(20)
+    rb_tree.insert(23)
+    rb_tree.insert(8)
     rb_tree.inorder_traversal(rb_tree.root)
 
 
