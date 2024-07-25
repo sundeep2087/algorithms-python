@@ -170,7 +170,7 @@ class RedBlackTree:
         print(curr_node.key, end=" ")
 
     def levelorder_traversal(self, curr_node):
-        if not curr_node or self.root:
+        if not curr_node:
             return []
 
         queue = LLQueue()
@@ -191,6 +191,21 @@ class RedBlackTree:
 
             print(*curr_level_nodes)
 
+    def search(self, search_key, curr_node=None):
+        if not self.root:
+            return
+
+        if not curr_node:
+            curr_node = self.root
+        while curr_node:
+            if curr_node.key == search_key:
+                return curr_node
+            elif search_key < curr_node.key:
+                curr_node = curr_node.left
+            else:
+                curr_node = curr_node.right
+        return curr_node
+
 
 def run_test_client():
     rb_tree = RedBlackTree()
@@ -209,7 +224,9 @@ def run_test_client():
     rb_tree.inorder_traversal(rb_tree.root)
     print()
     rb_tree.levelorder_traversal(rb_tree.root)
-
+    print(f"Node with key 11 is found at - {rb_tree.search(11)}")
+    print(f"Node with key 100 is found at - {rb_tree.search(100)}")
+    rb_tree.levelorder_traversal(rb_tree.search(18))
 
 if __name__ == "__main__":
     run_test_client()
