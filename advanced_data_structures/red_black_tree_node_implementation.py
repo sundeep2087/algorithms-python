@@ -230,6 +230,57 @@ class RedBlackTree:
 
         node_v.parent = node_u.parent
 
+    def delete_fixup(self, x_node):
+        while x_node != self.root and x_node.color == "black":
+            if x_node == x_node.parent.left:
+                w_node = x_node.parent.right
+                if w_node.color == "red":
+                    w_node.color = "black"
+                    x_node.parent.color = "red"
+                    self.left_rotate(x_node.parent)
+                    w_node = x_node.parent.right
+                if w_node.left.color == "black" and w_node.right.color == "black":
+                    w_node.color = "red"
+                    x_node = x_node.parent
+                else:
+                    if w_node.right.color == "black":
+                        w_node.left.color = "black"
+                        w_node.color = "red"
+                        self.right_rotate(w_node)
+                        w_node = x_node.parent.right
+                    w_node.color = x_node.parent.color
+                    x_node.parent.color = "black"
+                    w_node.right.color = "black"
+                    self.left_rotate(x_node.parent)
+                    x_node = self.root
+            else:
+                w_node = x_node.parent.left
+                if w_node.color == "red":
+                    w_node.color = "black"
+                    w_node.parent.color = "red"
+                    self.right_rotate(x_node.parent)
+                    w_node = x_node.parent.left
+                if w_node.right.color == "black" and w_node.left.color == "black":
+                    w_node.color = "red"
+                    x_node = x_node.parent
+                else:
+                    if w_node.left.color == "black":
+                        w_node.right.color = "black"
+                        w_node.color = "red"
+                        self.left_rotate(w_node)
+                        w_node = x_node.parent.left
+                    w_node.color = x_node.parent.color
+                    x_node.parent.color = "black"
+                    w_node.left.color = "black"
+                    self.right_rotate(x_node.parent)
+                    x_node = self.root
+        x_node.color = "black"
+
+
+
+
+
+
     def delete(self, delete_key):
         node = self.search(delete_key)
         if not node:
