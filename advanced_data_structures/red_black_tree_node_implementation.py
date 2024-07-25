@@ -36,6 +36,8 @@ Contact:
 
 """
 
+from intermediate_data_structures.queue_adt_node_implementation import LLQueue
+
 
 class Node:
     def __init__(self, key, color="red"):
@@ -167,6 +169,28 @@ class RedBlackTree:
         self.postorder_traversal(curr_node.right)
         print(curr_node.key, end=" ")
 
+    def levelorder_traversal(self, curr_node):
+        if not curr_node:
+            return []
+
+        queue = LLQueue()
+        queue.enqueue(self.root)
+
+        while queue:
+            curr_level_nodes = []
+            curr_level_nodes_count = len(queue)
+
+            for i in range(curr_level_nodes_count):
+                next_node = queue.dequeue()
+                curr_level_nodes.append(next_node.key)
+
+                if next_node.left:
+                    queue.enqueue(next_node.left)
+                if next_node.right:
+                    queue.enqueue(next_node.right)
+
+            print(*curr_level_nodes)
+
 
 def run_test_client():
     rb_tree = RedBlackTree()
@@ -183,6 +207,8 @@ def run_test_client():
     rb_tree.insert(23)
     rb_tree.insert(8)
     rb_tree.inorder_traversal(rb_tree.root)
+    print()
+    rb_tree.levelorder_traversal(rb_tree.root)
 
 
 if __name__ == "__main__":

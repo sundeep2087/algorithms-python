@@ -76,6 +76,9 @@ class LLQueue:
     def __iter__(self):
         return self.QueueIterator(self.head)
 
+    def __len__(self):
+        return self.queue_size
+
 
 def run_test_client():
     queue = LLQueue()
