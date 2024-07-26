@@ -50,20 +50,24 @@ class Node:
 
 class RedBlackTree:
     def __init__(self):
-        self.root = None
+        self._NIL = Node(None, "black")
+        self.root = self._NIL
         self._size = 0
 
     def is_empty(self):
         return self.root is None
 
     def left_rotate(self, node_x):
+        if node_x.right == self._NIL:
+            raise ValueError("Cannot Perform Left Rotation since right child of node is NIL")
         node_y = node_x.right
         node_x.right = node_y.left
-        if node_y.left is not None:
+
+        if node_y.left != self._NIL:
             node_y.left.parent = node_x
 
         node_y.parent = node_x.parent
-        if node_x.parent is None:
+        if node_x.parent == self._NIL:
             self.root = node_y
         elif node_x == node_x.parent.left:
             node_x.parent.left = node_y
@@ -74,13 +78,16 @@ class RedBlackTree:
         node_x.parent = node_y
 
     def right_rotate(self, node_x):
+        if node_x.left == self._NIL:
+            raise ValueError(f"Cannot perform right rotation since left child of node is NIL")
         node_y = node_x.left
         node_x.left = node_y.right
-        if node_y.right is not None:
+
+        if node_y.right != self._NIL:
             node_y.right.parent = node_x
 
         node_y.parent = node_x.parent
-        if node_x.parent is None:
+        if node_x.parent == self._NIL:
             self.root = node_y
         elif node_x.parent.right == node_x:
             node_x.parent.right = node_y
@@ -91,8 +98,8 @@ class RedBlackTree:
         node_x.parent = node_y
 
     def insert_fixup(self, node_z):
-        while node_z is not self.root and node_z.parent.color == "red":
-            if node_z.parent is node_z.parent.parent.left:
+        while node_z != self.root and node_z.parent.color == "red":
+            if node_z.parent == node_z.parent.parent.left:
 
                 node_y = node_z.parent.parent.right
 
@@ -102,7 +109,7 @@ class RedBlackTree:
                     node_z.parent.parent.color = "red"
                     node_z = node_z.parent.parent
                 else:
-                    if node_z is node_z.parent.right:
+                    if node_z == node_z.parent.right:
                         node_z = node_z.parent
                         self.left_rotate(node_z)
                     node_z.parent.color = "black"
@@ -128,10 +135,12 @@ class RedBlackTree:
 
     def insert(self, insert_key):
         new_node = Node(insert_key)
+        new_node.left = self._NIL
+        new_node.right = self._NIL
 
         curr_node = self.root
-        parent = None
-        while curr_node:
+        parent = self._NIL
+        while curr_node != self._NIL:
             parent = curr_node
             if new_node.key < curr_node.key:
                 curr_node = curr_node.left
@@ -139,7 +148,7 @@ class RedBlackTree:
                 curr_node = curr_node.right
 
         new_node.parent = parent
-        if parent is None:
+        if parent == self._NIL:
             self.root = new_node
         elif new_node.key < parent.key:
             parent.left = new_node
@@ -152,13 +161,15 @@ class RedBlackTree:
         if not curr_node:
             return
         self.inorder_traversal(curr_node.left)
-        print(curr_node.key, end=" ")
+        if curr_node.key is not None:
+            print(curr_node.key, end=" ")
         self.inorder_traversal(curr_node.right)
 
     def preorder_traversal(self, curr_node):
         if not curr_node:
             return
-        print(curr_node.key, end=" ")
+        if curr_node.key is not None:
+            print(curr_node.key, end=" ")
         self.preorder_traversal(curr_node.left)
         self.preorder_traversal(curr_node.right)
 
@@ -167,7 +178,8 @@ class RedBlackTree:
             return
         self.postorder_traversal(curr_node.left)
         self.postorder_traversal(curr_node.right)
-        print(curr_node.key, end=" ")
+        if curr_node.key is not None:
+            print(curr_node.key, end=" ")
 
     def levelorder_traversal(self, curr_node):
         if not curr_node:
@@ -177,19 +189,18 @@ class RedBlackTree:
         queue.enqueue(curr_node)
 
         while queue:
-            curr_level_nodes = []
             curr_level_nodes_count = len(queue)
 
             for i in range(curr_level_nodes_count):
                 next_node = queue.dequeue()
-                curr_level_nodes.append(next_node.key)
+                if next_node != self._NIL:
+                    print(next_node.key, end=" ")
 
                 if next_node.left:
                     queue.enqueue(next_node.left)
                 if next_node.right:
                     queue.enqueue(next_node.right)
-
-            print(*curr_level_nodes)
+            print()
 
     def search(self, search_key, curr_node=None):
         if not self.root:
@@ -321,15 +332,20 @@ def run_test_client():
     rb_tree.insert(20)
     rb_tree.insert(23)
     rb_tree.insert(8)
+    print(f"Inorder Traversal - ")
     rb_tree.inorder_traversal(rb_tree.root)
-    print()
+    print(f"\nPreorder Traversal - ")
+    rb_tree.preorder_traversal(rb_tree.root)
+    print(f"\npostorder Traversal - ")
+    rb_tree.postorder_traversal(rb_tree.root)
+    print(f"\nlevelorder Traversal - ")
     rb_tree.levelorder_traversal(rb_tree.root)
-    print(f"Node with key 11 is found at - {rb_tree.search(11)}")
-    print(f"Node with key 100 is found at - {rb_tree.search(100)}")
-    rb_tree.levelorder_traversal(rb_tree.search(18))
-    rb_tree.delete(23)
-    rb_tree.delete(8)
-    rb_tree.inorder_traversal(rb_tree.root)
+    # print(f"Node with key 11 is found at - {rb_tree.search(11)}")
+    # print(f"Node with key 100 is found at - {rb_tree.search(100)}")
+    # rb_tree.levelorder_traversal(rb_tree.search(18))
+    # rb_tree.delete(18)
+    # rb_tree.delete(20)
+    # rb_tree.inorder_traversal(rb_tree.root)
 
 
 if __name__ == "__main__":
