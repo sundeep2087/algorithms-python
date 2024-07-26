@@ -118,13 +118,13 @@ class RedBlackTree:
             else:
                 node_y = node_z.parent.parent.left
 
-                if node_y and node_y.color == "red":
+                if node_y.color == "red":
                     node_z.parent.parent.color = "red"
                     node_z.parent.color = "black"
                     node_y.color = "black"
                     node_z = node_z.parent.parent
                 else:
-                    if node_z is node_z.parent.left:
+                    if node_z == node_z.parent.left:
                         node_z = node_z.parent
                         self.right_rotate(node_z)
                     node_z.parent.color = "black"
@@ -134,12 +134,13 @@ class RedBlackTree:
         self.root.color = "black"
 
     def insert(self, insert_key):
-        new_node = Node(insert_key)
+        new_node = Node(insert_key, color="red")
         new_node.left = self._NIL
         new_node.right = self._NIL
 
         curr_node = self.root
         parent = self._NIL
+
         while curr_node != self._NIL:
             parent = curr_node
             if new_node.key < curr_node.key:
@@ -148,6 +149,7 @@ class RedBlackTree:
                 curr_node = curr_node.right
 
         new_node.parent = parent
+
         if parent == self._NIL:
             self.root = new_node
         elif new_node.key < parent.key:
@@ -202,37 +204,29 @@ class RedBlackTree:
                     queue.enqueue(next_node.right)
             print()
 
-    def search(self, search_key, curr_node=None):
-        if not self.root:
-            return
-
-        if not curr_node:
-            curr_node = self.root
-        while curr_node:
-            if curr_node.key == search_key:
-                return curr_node
-            elif search_key < curr_node.key:
+    def search(self, search_key):
+        curr_node = self.root
+        while curr_node != self._NIL and curr_node.key != search_key:
+            if search_key < curr_node.key:
                 curr_node = curr_node.left
             else:
                 curr_node = curr_node.right
-        return curr_node
+        return curr_node if curr_node != self._NIL else None
 
     def minimum_node(self, curr_node):
         if not self.root:
             return
-        while curr_node:
+        while curr_node.left != self._NIL:
             curr_node = curr_node.left
         return curr_node
 
     def maximum_node(self, curr_node):
-        if not self.root:
-            return
-        while curr_node:
+        while curr_node.right != self._NIL:
             curr_node = curr_node.right
         return curr_node
 
     def transplant(self, node_u, node_v):
-        if node_u.parent is None:
+        if node_u.parent == self._NIL:
             self.root = node_v
         elif node_u == node_u.parent.right:
             node_u.parent.right = node_v
@@ -289,14 +283,15 @@ class RedBlackTree:
 
     def delete(self, delete_key):
         node = self.search(delete_key)
-        if not node:
+        if node is self._NIL:
             print(f"No node in tree with key {delete_key}")
             return
+
         original_color = node.color
-        if node.left is None:
+        if node.left == self._NIL:
             child = node.right
             self.transplant(node, node.right)
-        elif node.right is None:
+        elif node.right == self._NIL:
             child = node.left
             self.transplant(node, node.left)
         else:
@@ -304,16 +299,17 @@ class RedBlackTree:
             original_color = successor.color
             child = successor.right
 
-            if successor != node.right:
+            if successor.parent == node:
+                child.parent = successor
+            else:
                 self.transplant(successor, successor.right)
                 successor.right = node.right
                 successor.right.parent = successor
-            else:
-                child.parent = successor
             self.transplant(node, successor)
-            node.left = successor.left
+            successor.left = node.left
             successor.left.parent = successor
             successor.color = node.color
+
         if original_color == "black":
             self._delete_fixup(child)
 
@@ -340,12 +336,22 @@ def run_test_client():
     rb_tree.postorder_traversal(rb_tree.root)
     print(f"\nlevelorder Traversal - ")
     rb_tree.levelorder_traversal(rb_tree.root)
-    # print(f"Node with key 11 is found at - {rb_tree.search(11)}")
-    # print(f"Node with key 100 is found at - {rb_tree.search(100)}")
-    # rb_tree.levelorder_traversal(rb_tree.search(18))
-    # rb_tree.delete(18)
-    # rb_tree.delete(20)
-    # rb_tree.inorder_traversal(rb_tree.root)
+    print(f"Node with key 11 is found at - {rb_tree.search(11)}")
+    print(f"Node with key 100 is found at - {rb_tree.search(100)}")
+    rb_tree.delete(2)
+    rb_tree.delete(3)
+    rb_tree.delete(4)
+    rb_tree.delete(7)
+    rb_tree.delete(11)
+    rb_tree.delete(9)
+    rb_tree.delete(6)
+    rb_tree.delete(14)
+    rb_tree.delete(18)
+    rb_tree.inorder_traversal(rb_tree.root)
+    rb_tree.delete(20)
+    rb_tree.delete(23)
+    rb_tree.delete(8)
+    rb_tree.inorder_traversal(rb_tree.root)
 
 
 if __name__ == "__main__":
