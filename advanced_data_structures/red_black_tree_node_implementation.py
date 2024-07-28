@@ -37,6 +37,7 @@ Contact:
 """
 
 from intermediate_data_structures.queue_adt_node_implementation import LLQueue
+from graphviz import Digraph
 
 
 class Node:
@@ -313,6 +314,59 @@ class RedBlackTree:
         if original_color == "black":
             self._delete_fixup(child)
 
+    def _recursive_depth(self, curr_node, search_node, depth=0):
+        if not curr_node:
+            return -1
+
+        if curr_node == search_node:
+            return depth
+
+        left_depth = self._recursive_depth(curr_node.left, search_node, depth+1)
+        if left_depth != -1:
+            return left_depth
+
+        right_depth = self._recursive_depth(curr_node.right, search_node, depth+1)
+        if right_depth != -1:
+            return right_depth
+
+        return -1
+
+    def depth(self, node=None):
+        if node is None:
+            return -1
+        return self._recursive_depth(self.root, node, 0)
+
+    def _recursive_height(self, node):
+        if not node:
+            return -1
+        left_height = self._recursive_height(node.left)
+        right_height = self._recursive_height(node.right)
+        return max(left_height, right_height) + 1
+
+    def height(self, node=None):
+        if not node:
+            return self._recursive_height(self.root)
+        else:
+            return self._recursive_height(node)
+
+    def _visualize(self, node, graph):
+        if node is not None:
+            if node.left:
+                graph.node(str(node.key))
+                graph.edge(str(node.key), str(node.left.key))
+                self._visualize(node.left, graph)
+            if node.right:
+                graph.node(str(node.key))
+                graph.edge(str(node.key), str(node.right.key))
+                self._visualize(node.right, graph)
+
+    def visualize(self):
+        dg = Digraph()
+        if self.root:
+            dg.node(str(self.root.key))
+            self._visualize(self.root, dg)
+        dg.render("data/red_black_tree", format="png", cleanup=False)
+
 
 def run_test_client():
     rb_tree = RedBlackTree()
@@ -338,6 +392,17 @@ def run_test_client():
     rb_tree.levelorder_traversal(rb_tree.root)
     print(f"Node with key 11 is found at - {rb_tree.search(11)}")
     print(f"Node with key 100 is found at - {rb_tree.search(100)}")
+
+    print(f"Height of the Tree: {rb_tree.height()}")
+    print(f"Height of node 23: {rb_tree.height(rb_tree.search(23))}")
+    print(f"Height of node 3: {rb_tree.height(rb_tree.search(3))}")
+
+    print(f"Depth of Tree: {rb_tree.depth(rb_tree.root)}")
+    print(f"Depth of node 23: {rb_tree.depth(rb_tree.search(23))}")
+    print(f"Depth of node 2: {rb_tree.depth(rb_tree.search(2))}")
+
+    rb_tree.visualize()
+
     rb_tree.delete(2)
     rb_tree.delete(3)
     rb_tree.delete(4)

@@ -37,6 +37,7 @@ Contact:
 """
 
 from intermediate_data_structures.queue_adt_node_implementation import LLQueue
+from graphviz import Digraph
 
 
 class Node:
@@ -242,6 +243,25 @@ class BinarySearchTree:
         return self._recursive_depth(self.root, node)
 
 
+    def _visualize(self, node, graph):
+        if node is not None:
+            if node.left:
+                graph.node(str(node.key))
+                graph.edge(str(node.key), str(node.left.key))
+                self._visualize(node.left, graph)
+            if node.right:
+                graph.node(str(node.key))
+                graph.edge(str(node.key), str(node.right.key))
+                self._visualize(node.right, graph)
+
+    def visualize(self):
+        dg = Digraph()
+        if self.root:
+            dg.node(str(self.root.key))
+            self._visualize(self.root, dg)
+        dg.render("data/bst_tree", format="png", cleanup=False)
+
+
 def run_test_client():
     bst = BinarySearchTree()
     bst.insert(3)
@@ -253,6 +273,20 @@ def run_test_client():
     bst.insert(23)
     bst.insert(42)
     bst.insert(9)
+
+    # bst.insert(2)
+    # bst.insert(3)
+    # bst.insert(4)
+    # bst.insert(7)
+    # bst.insert(11)
+    # bst.insert(9)
+    # bst.insert(6)
+    # bst.insert(14)
+    # bst.insert(18)
+    # bst.insert(20)
+    # bst.insert(23)
+    # bst.insert(8)
+    bst.visualize()
     print(f"Size of BST: {bst.size}")
     print(f"Tree Height: {bst.height()}")
     bst.levelorder_traversal(bst.root)
@@ -273,21 +307,32 @@ def run_test_client():
     bst.inorder_traversal(bst.root)
     print()
     print(f"Tree Height: {bst.height()}")
+
     succ_42 = bst.successor(bst.search(bst.root, 42))
-    print(f"\nSuccessor to 42: {succ_42.key}")
+    try:
+        print(f"\nSuccessor to 42: {succ_42.key}")
+    except AttributeError as e:
+        print("No Successor to provided key!")
     pred_8 = bst.predecessor(bst.search(bst.root, 8))
+
     print(f"Successor to 8: {pred_8.key}")
     bst.inorder_traversal(bst.root)
     print()
     print(f"Size of BST: {bst.size}")
     print(f"Tree Height: {bst.height()}")
+
     pred_42 = bst.predecessor(bst.search(bst.root, 42))
-    print(f"\nSuccessor to 42: {pred_42.key}")
+    try:
+        print(f"\nPredecessor to 42: {pred_42.key}")
+    except AttributeError as e:
+        print(f"No predecessor to provided key!")
+
     pred_1 = bst.predecessor(bst.search(bst.root, 1))
     try:
         print(f"\nPredecessor of 1: {pred_1.key}")
     except AttributeError:
         print(f"No Predecessor 1!")
+
     succ_99 = bst.successor(bst.search(bst.root, 99))
     try:
         print(f"Successor to 99: {succ_99.key}")
