@@ -170,6 +170,28 @@ class AVLTree:
         self._recursive_postorder_traversal(node, result)
         return result
 
+    def _recursive_search(self, root, key):
+        if self.is_empty():
+            return
+
+        results = []
+        if key < root.key:
+            results.extend(self._recursive_search(root.left, key))
+        elif key > root.key:
+            results.extend(self._recursive_search(root.right, key))
+        else:
+            results.append(root)
+            results.extend(self._recursive_search(root.right, key))
+
+        return results
+
+
+
+    def search(self, key, root=None):
+        if not root:
+            self._recursive_search(self.root, key)
+        self._recursive_search(root, key)
+
     # Tree Visualization Methods
     def _visualize(self, node, graph):
         if node is not None:
