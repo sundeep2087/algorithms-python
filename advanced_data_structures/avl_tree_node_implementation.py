@@ -215,10 +215,10 @@ def run_test_client():
     print(f"Inorder Traversal: {inorder_traversal}")
 
     preorder_traversal = avl_tree.preorder_traversal()
-    print(f"Inorder Traversal: {preorder_traversal}")
+    print(f"Preorder Traversal: {preorder_traversal}")
 
     postorder_traversal = avl_tree.postorder_traversal()
-    print(f"Inorder Traversal: {postorder_traversal}")
+    print(f"Postorder Traversal: {postorder_traversal}")
 
     avl_tree.visualize()
 
