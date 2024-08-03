@@ -37,15 +37,16 @@ Contact:
 """
 
 from graphviz import Digraph
-
+# import numpy as np
+# np.random.seed(1000)
 
 class AVLTreeNode:
-    def __init__(self, key, left=None, right=None):
+    def __init__(self, key, unique_vizid):
         self.key = key
-        self.left = left
-        self.right = right
+        self.left = None
+        self.right = None
         self.height = 1
-        self.count = 1
+        self.unique_vizid = unique_vizid
 
 
 class AVLTree:
@@ -92,34 +93,32 @@ class AVLTree:
 
     def _insert_key(self, root, key):
         if not root:
-            return AVLTreeNode(key)
+            self._size += 1
+            return AVLTreeNode(key, self._size)
 
         if key < root.key:
             root.left = self._insert_key(root.left, key)
-        elif key > root.key:
-            root.right = self._insert_key(root.right, key)
         else:
-            root.count += 1
-            return root
+            root.right = self._insert_key(root.right, key)
 
         self.update_height(root)
         balance = self.get_balance(root)
 
         # Left-Left Case
-        if balance > 1 and key < root.left.key:
+        if balance > 1 and key <= root.left.key:
             return self.rotate_right(root)
 
         # Right-Right Case
-        if balance < -1 and key > root.right.key:
+        if balance < -1 and key >= root.right.key:
             return self.rotate_left(root)
 
         # Right-Left Case
-        if balance < -1 and key < root.right.key:
+        if balance < -1 and key <= root.right.key:
             root.right = self.rotate_right(root.right)
             return self.rotate_left(root)
 
         # Left-Right Case
-        if balance > 1 and key > root.left.key:
+        if balance > 1 and key >= root.left.key:
             root.left = self.rotate_left(root.left)
             return self.rotate_right(root)
 
@@ -133,7 +132,7 @@ class AVLTree:
         if not node:
             return
         self._recursive_inorder_traversal(node.left, result)
-        result.extend([node.key] * node.count)
+        result.append(node.key)
         self._recursive_inorder_traversal(node.right, result)
 
     def inorder_traversal(self, node=None):
@@ -148,38 +147,43 @@ class AVLTree:
     # Tree Visualization Methods
     def _visualize(self, node, graph):
         if node is not None:
+            graph.node(str(node.unique_vizid), label=str(node.key))
             if node.left:
-                graph.node(str(node.key))
-                graph.edge(str(node.key), str(node.left.key))
+                graph.edge(str(node.unique_vizid), str(node.left.unique_vizid))
                 self._visualize(node.left, graph)
             if node.right:
-                graph.node(str(node.key))
-                graph.edge(str(node.key), str(node.right.key))
+                graph.edge(str(node.unique_vizid), str(node.right.unique_vizid))
                 self._visualize(node.right, graph)
 
     def visualize(self):
         dg = Digraph()
         if self.root:
-            dg.node(str(self.root.key))
+            dg.node(str(self.root.unique_vizid), label=str(self.root.key))
             self._visualize(self.root, dg)
-        dg.render("./data/avl_tree", format="png", cleanup=False)
+        dg.render("./data/avl_tree2", format="png", cleanup=False)
 
 
 def run_test_client():
     avl_tree = AVLTree()
-    avl_tree.insert(40)
-    avl_tree.insert(27)
-    avl_tree.insert(1)
-    avl_tree.insert(35)
-    avl_tree.insert(41)
-    avl_tree.insert(8)
+    # a = (f"avl_tree.insert({i})" for i in np.random.randint(1, 50, 10))
+    # for i in a:
+    #     print(i)
+
+    avl_tree.insert(2)
+    avl_tree.insert(37)
+    avl_tree.insert(33)
+    avl_tree.insert(15)
     avl_tree.insert(32)
-    avl_tree.insert(36)
-    avl_tree.insert(13)
-    avl_tree.insert(44)
-    avl_tree.insert(8)
-    avl_tree.insert(8)
-    avl_tree.insert(8)
+    avl_tree.insert(11)
+    avl_tree.insert(15)
+    avl_tree.insert(25)
+    avl_tree.insert(17)
+    avl_tree.insert(26)
+    avl_tree.insert(40)
+    avl_tree.insert(32)
+    avl_tree.insert(2)
+    avl_tree.insert(41)
+    avl_tree.insert(3)
 
     inorder_traversal = avl_tree.inorder_traversal()
     print(inorder_traversal)
