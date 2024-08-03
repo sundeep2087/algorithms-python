@@ -67,7 +67,7 @@ class AVLTree:
         if node:
             node.height = 1 + max(self.get_height(node.left), self.get_height(node.right))
 
-    def rotate_left(self, node):
+    def _rotate_left(self, node):
         y = node.right
         T2 = y.left
 
@@ -79,7 +79,7 @@ class AVLTree:
 
         return y
 
-    def rotate_right(self, node):
+    def _rotate_right(self, node):
         y = node.left
         T2 = y.right
 
@@ -106,21 +106,21 @@ class AVLTree:
 
         # Left-Left Case
         if balance > 1 and key <= root.left.key:
-            return self.rotate_right(root)
+            return self._rotate_right(root)
 
         # Right-Right Case
         if balance < -1 and key >= root.right.key:
-            return self.rotate_left(root)
+            return self._rotate_left(root)
 
         # Right-Left Case
         if balance < -1 and key <= root.right.key:
-            root.right = self.rotate_right(root.right)
-            return self.rotate_left(root)
+            root.right = self._rotate_right(root.right)
+            return self._rotate_left(root)
 
         # Left-Right Case
         if balance > 1 and key >= root.left.key:
-            root.left = self.rotate_left(root.left)
-            return self.rotate_right(root)
+            root.left = self._rotate_left(root.left)
+            return self._rotate_right(root)
 
         return root
 
