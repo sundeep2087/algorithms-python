@@ -149,11 +149,12 @@ class AVLTree:
         self._recursive_preorder_traversal(node.left, result)
         self._recursive_preorder_traversal(node.right, result)
 
-    def preorder_traversal(self, node):
+    def preorder_traversal(self, node=None):
         result = []
         if not node:
             self._recursive_preorder_traversal(self.root, result)
         self._recursive_preorder_traversal(node, result)
+        return result
 
     def _recursive_postorder_traversal(self, node, result):
         if not node:
@@ -162,11 +163,12 @@ class AVLTree:
         self._recursive_postorder_traversal(node.right, result)
         result.append(node.key)
 
-    def postorder_traversal(self, node):
+    def postorder_traversal(self, node=None):
         result = []
         if not node:
             self._recursive_postorder_traversal(self.root, result)
         self._recursive_postorder_traversal(node, result)
+        return result
 
     # Tree Visualization Methods
     def _visualize(self, node, graph):
@@ -210,7 +212,14 @@ def run_test_client():
     avl_tree.insert(3)
 
     inorder_traversal = avl_tree.inorder_traversal()
-    print(inorder_traversal)
+    print(f"Inorder Traversal: {inorder_traversal}")
+
+    preorder_traversal = avl_tree.preorder_traversal()
+    print(f"Inorder Traversal: {preorder_traversal}")
+
+    postorder_traversal = avl_tree.postorder_traversal()
+    print(f"Inorder Traversal: {postorder_traversal}")
+
     avl_tree.visualize()
 
 
