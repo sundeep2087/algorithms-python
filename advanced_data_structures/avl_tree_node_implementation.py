@@ -171,26 +171,24 @@ class AVLTree:
         return result
 
     def _recursive_search(self, root, key):
-        if self.is_empty():
-            return
-
         results = []
+        if not root:
+            return results
+
         if key < root.key:
             results.extend(self._recursive_search(root.left, key))
         elif key > root.key:
             results.extend(self._recursive_search(root.right, key))
         else:
             results.append(root)
+            results.extend(self._recursive_search(root.left, key))
             results.extend(self._recursive_search(root.right, key))
-
         return results
-
-
 
     def search(self, key, root=None):
         if not root:
-            self._recursive_search(self.root, key)
-        self._recursive_search(root, key)
+            root = self.root
+        return self._recursive_search(root, key)
 
     # Tree Visualization Methods
     def _visualize(self, node, graph):
@@ -242,7 +240,21 @@ def run_test_client():
     postorder_traversal = avl_tree.postorder_traversal()
     print(f"Postorder Traversal: {postorder_traversal}")
 
+    search_result = avl_tree.search(40)
+    print(f"Search result for key=40 : {search_result}")
+
+    search_result = avl_tree.search(2)
+    print(f"Search result for key=2 : {search_result}")
+
+    search_result = avl_tree.search(99)
+    print(f"Search result for key=99 : {search_result}")
+
+    search_result = avl_tree.search(15)
+    print(f"Search result for key=15 : {search_result}")
+
     avl_tree.visualize()
+
+
 
 
 if __name__ == "__main__":
