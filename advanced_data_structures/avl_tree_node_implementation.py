@@ -136,13 +136,37 @@ class AVLTree:
         self._recursive_inorder_traversal(node.right, result)
 
     def inorder_traversal(self, node=None):
-        if not self.root:
-            return
         result = []
         if not node:
             self._recursive_inorder_traversal(self.root, result)
         self._recursive_inorder_traversal(node, result)
         return result
+
+    def _recursive_preorder_traversal(self, node, result):
+        if not node:
+            return
+        result.append(node.key)
+        self._recursive_preorder_traversal(node.left, result)
+        self._recursive_preorder_traversal(node.right, result)
+
+    def preorder_traversal(self, node):
+        result = []
+        if not node:
+            self._recursive_preorder_traversal(self.root, result)
+        self._recursive_preorder_traversal(node, result)
+
+    def _recursive_postorder_traversal(self, node, result):
+        if not node:
+            return
+        self._recursive_postorder_traversal(node.left, result)
+        self._recursive_postorder_traversal(node.right, result)
+        result.append(node.key)
+
+    def postorder_traversal(self, node):
+        result = []
+        if not node:
+            self._recursive_postorder_traversal(self.root, result)
+        self._recursive_postorder_traversal(node, result)
 
     # Tree Visualization Methods
     def _visualize(self, node, graph):
