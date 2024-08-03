@@ -249,6 +249,15 @@ def run_test_client():
     search_result = avl_tree.search(99)
     print(f"Search result for key=99 : {search_result}")
 
+    search_result = avl_tree.search(37, avl_tree.search(40)[0])
+    print(f"Search result for key=37 in subtree rooted at key=40 : {search_result}")
+
+    search_result = avl_tree.search(10, avl_tree.search(15)[0])
+    print(f"Search result for key=10 in subtree rooted at key=15 : {search_result}")
+
+    search_result = avl_tree.search(11, avl_tree.search(2)[0])
+    print(f"Search result for key=11 in subtree rooted at first instance of 2 : {search_result}")
+
     search_result = avl_tree.search(15)
     print(f"Search result for key=15 : {search_result}")
 
