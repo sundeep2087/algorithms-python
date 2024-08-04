@@ -1,6 +1,7 @@
 # Additional Ignore Files
 references/
 todo.txt
+*scratch*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

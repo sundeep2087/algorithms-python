@@ -64,8 +64,7 @@ class AVLTree:
         return self.get_height(node.left) - self.get_height(node.right) if node else 0
 
     def update_height(self, node):
-        if node:
-            node.height = 1 + max(self.get_height(node.left), self.get_height(node.right))
+        node.height = 1 + max(self.get_height(node.left), self.get_height(node.right))
 
     def _rotate_left(self, node):
         y = node.right
@@ -96,14 +95,14 @@ class AVLTree:
 
         # Handle Left-Left and Left-Right Case
         if balance > 1:
-            if self.get_balance(node.left) < 0:
+            if self.get_balance(node.left) <= 0:
                 node.left = self._rotate_left(node.left)
             return self._rotate_right(node)
 
         # Handle Right-Right and Right-Left Case
         if balance < -1:
-            if self.get_balance(node.right) > 0:
-                self.right = self._rotate_right(node.right)
+            if self.get_balance(node.right) >= 0:
+                node.right = self._rotate_right(node.right)
             return self._rotate_left(node)
 
         return node
@@ -233,6 +232,9 @@ class AVLTree:
             self._visualize(self.root, dg)
         dg.render("./data/avl_tree1", format="png", cleanup=False)
 
+    def get_size(self):
+        return self._size
+
 
 def run_test_client():
     avl_tree = AVLTree()
@@ -286,8 +288,10 @@ def run_test_client():
     search_result = avl_tree.search(15)
     print(f"Search result for key=15 : {search_result}")
 
-    # avl_tree.insert(1)
-    # avl_tree.insert(44)
+    avl_tree.insert(1)
+    avl_tree.insert(44)
+
+
     min_elem = avl_tree.find_min()
     print(f"Minimum Element: {min_elem}")
 
