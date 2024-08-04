@@ -190,6 +190,33 @@ class AVLTree:
             root = self.root
         return self._recursive_search(root, key)
 
+    def _find_max(self, node):
+        curr_node = node
+        while curr_node.right is not None:
+            curr_node = curr_node.right
+        return curr_node.key
+
+    def find_max(self, node=None):
+        if not self.root:
+            raise ValueError("Tree is empty!")
+        if not node:
+            return self._find_max(self.root)
+        return self._find_max(node)
+
+    def _find_min(self, node):
+        curr_node = node
+        while curr_node.left is not None:
+            curr_node = curr_node.left
+        return curr_node.key
+
+    def find_min(self, node=None):
+        if not self.root:
+            raise ValueError("Tree is empty!")
+        if not node:
+            return self._find_min(self.root)
+        return self._find_min(node)
+
+
     # Tree Visualization Methods
     def _visualize(self, node, graph):
         if node is not None:
@@ -206,7 +233,7 @@ class AVLTree:
         if self.root:
             dg.node(str(self.root.unique_vizid), label=str(self.root.key))
             self._visualize(self.root, dg)
-        dg.render("./data/avl_tree2", format="png", cleanup=False)
+        dg.render("./data/avl_tree1", format="png", cleanup=False)
 
 
 def run_test_client():
@@ -261,10 +288,15 @@ def run_test_client():
     search_result = avl_tree.search(15)
     print(f"Search result for key=15 : {search_result}")
 
+    # avl_tree.insert(1)
+    # avl_tree.insert(44)
+    min_elem = avl_tree.find_min()
+    print(f"Minimum Element: {min_elem}")
+
+    max_elem = avl_tree.find_max()
+    print(f"Maximum Element: {max_elem}")
+
     avl_tree.visualize()
-
-
-
 
 if __name__ == "__main__":
     run_test_client()

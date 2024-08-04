@@ -1,22 +1,36 @@
 digraph {
-	2 [label=27]
-	2 [label=27]
-	2 -> 6
-	6 [label=8]
-	6 -> 3
-	3 [label=1]
-	6 -> 9
-	9 [label=13]
-	2 -> 1
-	1 [label=40]
-	1 -> 4
-	4 [label=35]
+	8 [label=25]
+	8 [label=25]
+	8 -> 4
+	4 [label=15]
+	4 -> 13
+	13 [label=2]
+	13 -> 1
+	1 [label=2]
+	1 -> 16
+	16 [label=1]
+	13 -> 6
+	6 [label=11]
+	6 -> 15
+	15 [label=3]
 	4 -> 7
-	7 [label=32]
-	4 -> 8
-	8 [label=36]
-	1 -> 5
-	5 [label=41]
+	7 [label=15]
+	7 -> 9
+	9 [label=17]
+	8 -> 3
+	3 [label=33]
+	3 -> 5
+	5 [label=32]
 	5 -> 10
-	10 [label=44]
+	10 [label=26]
+	5 -> 12
+	12 [label=32]
+	3 -> 11
+	11 [label=40]
+	11 -> 2
+	2 [label=37]
+	11 -> 14
+	14 [label=41]
+	14 -> 17
+	17 [label=44]
 }
