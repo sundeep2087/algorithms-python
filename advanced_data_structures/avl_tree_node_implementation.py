@@ -41,18 +41,19 @@ from graphviz import Digraph
 # np.random.seed(1000)
 
 class AVLTreeNode:
-    def __init__(self, key, unique_vizid):
+    def __init__(self, key, left=None, right=None):
         self.key = key
-        self.left = None
-        self.right = None
+        self.left = left
+        self.right = right
         self.height = 1
-        self.unique_vizid = unique_vizid
+        self.unique_vizid = None
 
 
 class AVLTree:
     def __init__(self):
         self.root = None
         self._size = 0
+        self._id_counter = 0
 
     def is_empty(self):
         return self.root is None
@@ -108,9 +109,11 @@ class AVLTree:
         return node
 
     def _insert_key(self, node, key):
-        if not node:
-            self._size += 1
-            return AVLTreeNode(key, self._size)
+        if node is None:
+            new_node = AVLTreeNode(key)
+            new_node.unique_vizid = self._id_counter
+            self._id_counter += 1
+            return new_node
 
         if key < node.key:
             node.left = self._insert_key(node.left, key)
@@ -123,6 +126,7 @@ class AVLTree:
 
     def insert(self, key):
         self.root = self._insert_key(self.root, key)
+        self._size += 1
 
     # Traversal Methods
     def _recursive_inorder_traversal(self, node, result):
