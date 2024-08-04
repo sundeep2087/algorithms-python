@@ -188,10 +188,9 @@ class AVLTree:
         return self._recursive_search(root, key)
 
     def _find_max(self, node):
-        curr_node = node
-        while curr_node.right is not None:
-            curr_node = curr_node.right
-        return curr_node
+        while node.right is not None:
+            node = node.right
+        return node
 
     def find_max(self, node=None):
         if not self.root:
@@ -201,10 +200,9 @@ class AVLTree:
         return self._find_max(node)
 
     def _find_min(self, node):
-        curr_node = node
-        while curr_node.left is not None:
-            curr_node = curr_node.left
-        return curr_node
+        while node.left is not None:
+            node = node.left
+        return node
 
     def find_min(self, node=None):
         if not self.root:
