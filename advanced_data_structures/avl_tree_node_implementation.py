@@ -191,7 +191,7 @@ class AVLTree:
         curr_node = node
         while curr_node.right is not None:
             curr_node = curr_node.right
-        return curr_node.key
+        return curr_node
 
     def find_max(self, node=None):
         if not self.root:
@@ -204,7 +204,7 @@ class AVLTree:
         curr_node = node
         while curr_node.left is not None:
             curr_node = curr_node.left
-        return curr_node.key
+        return curr_node
 
     def find_min(self, node=None):
         if not self.root:
@@ -213,6 +213,28 @@ class AVLTree:
             return self._find_min(self.root)
         return self._find_min(node)
 
+    def _delete_node(self, node, key):
+        if node is None:
+            return node
+
+        if key < node.key:
+            node.left = self._delete_node(node.left, key)
+        elif key > node.key:
+            node.right = self._delete_node(node.right, key)
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+            next_min_node = self._find_min(node.right)
+            node.key = next_min_node.key
+            node.right = self._delete_node(node.right, next_min_node.key)
+
+        self.update_height(node)
+        return self._rebalance(node)
+
+    def delete(self, key):
+        self.root = self._delete_node(self.root, key)
 
     # Tree Visualization Methods
     def _visualize(self, node, graph):
@@ -291,12 +313,14 @@ def run_test_client():
     avl_tree.insert(1)
     avl_tree.insert(44)
 
-
     min_elem = avl_tree.find_min()
     print(f"Minimum Element: {min_elem}")
 
     max_elem = avl_tree.find_max()
     print(f"Maximum Element: {max_elem}")
+
+    avl_tree.delete(26)
+    avl_tree.delete(2)
 
     avl_tree.visualize()
 
