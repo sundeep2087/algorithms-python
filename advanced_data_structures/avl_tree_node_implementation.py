@@ -91,38 +91,36 @@ class AVLTree:
 
         return y
 
-    def _insert_key(self, root, key):
-        if not root:
+    def _rebalance(self, node):
+        balance = self.get_balance(node)
+
+        # Handle Left-Left and Left-Right Case
+        if balance > 1:
+            if self.get_balance(node.left) < 0:
+                node.left = self._rotate_left(node.left)
+            return self._rotate_right(node)
+
+        # Handle Right-Right and Right-Left Case
+        if balance < -1:
+            if self.get_balance(node.right) > 0:
+                self.right = self._rotate_right(node.right)
+            return self._rotate_left(node)
+
+        return node
+
+    def _insert_key(self, node, key):
+        if not node:
             self._size += 1
             return AVLTreeNode(key, self._size)
 
-        if key < root.key:
-            root.left = self._insert_key(root.left, key)
+        if key < node.key:
+            node.left = self._insert_key(node.left, key)
         else:
-            root.right = self._insert_key(root.right, key)
+            node.right = self._insert_key(node.right, key)
 
-        self.update_height(root)
-        balance = self.get_balance(root)
+        self.update_height(node)
 
-        # Left-Left Case
-        if balance > 1 and key <= root.left.key:
-            return self._rotate_right(root)
-
-        # Right-Right Case
-        if balance < -1 and key >= root.right.key:
-            return self._rotate_left(root)
-
-        # Right-Left Case
-        if balance < -1 and key <= root.right.key:
-            root.right = self._rotate_right(root.right)
-            return self._rotate_left(root)
-
-        # Left-Right Case
-        if balance > 1 and key >= root.left.key:
-            root.left = self._rotate_left(root.left)
-            return self._rotate_right(root)
-
-        return root
+        return self._rebalance(node)
 
     def insert(self, key):
         self.root = self._insert_key(self.root, key)
