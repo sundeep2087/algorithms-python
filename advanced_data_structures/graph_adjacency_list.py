@@ -81,6 +81,9 @@ class Graph:
         for node, neighbors in self.graph.items():
             print(f"{node}: {neighbors}")
 
+    def n_vertices(self):
+        return len(self.graph)
+
 
 class DirectedGraph(Graph):
     """Directed Graph class, inheriting from Graph."""
