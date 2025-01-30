@@ -84,6 +84,9 @@ class Graph:
     def n_vertices(self):
         return len(self.graph)
 
+    def get_nodes(self):
+        return self.graph.keys()
+
 
 class DirectedGraph(Graph):
     """Directed Graph class, inheriting from Graph."""
